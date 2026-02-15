@@ -6,6 +6,8 @@ import { Heart, X, MessageCircle, User as UserIcon, Sparkles } from 'lucide-reac
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
 const Discover = () => {
     const [profiles, setProfiles] = useState([]);
     const { token, user } = useAuth();
@@ -15,7 +17,7 @@ const Discover = () => {
     useEffect(() => {
         const fetchProfiles = async () => {
             try {
-                const res = await axios.get('http://localhost:5001/api/profile', {
+                const res = await axios.get(`${API_URL}/api/profile`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setProfiles(res.data);

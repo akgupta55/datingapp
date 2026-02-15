@@ -21,9 +21,11 @@ export const AuthProvider = ({ children }) => {
         }
     }, [token]);
 
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
     const fetchUser = async () => {
         try {
-            const res = await axios.get('http://localhost:5001/api/profile/me', {
+            const res = await axios.get(`${API_URL}/api/profile/me`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setUser(res.data);
@@ -36,14 +38,14 @@ export const AuthProvider = ({ children }) => {
     };
 
     const login = async (email, password) => {
-        const res = await axios.post('http://localhost:5001/api/auth/login', { email, password });
+        const res = await axios.post(`${API_URL}/api/auth/login`, { email, password });
         setToken(res.data.token);
         setUser(res.data.user);
         return res.data;
     };
 
     const register = async (userData) => {
-        const res = await axios.post('http://localhost:5001/api/auth/register', userData);
+        const res = await axios.post(`${API_URL}/api/auth/register`, userData);
         setToken(res.data.token);
         setUser(res.data.user);
         return res.data;

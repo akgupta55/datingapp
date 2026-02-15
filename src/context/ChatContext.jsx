@@ -6,6 +6,8 @@ const ChatContext = createContext();
 
 export const useChat = () => useContext(ChatContext);
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
 export const ChatProvider = ({ children }) => {
     const { user, token } = useAuth();
     const [socket, setSocket] = useState(null);
@@ -16,7 +18,7 @@ export const ChatProvider = ({ children }) => {
 
     useEffect(() => {
         if (user && token) {
-            const newSocket = io('http://localhost:5001', {
+            const newSocket = io(API_URL, {
                 auth: { token }
             });
 

@@ -4,6 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, Camera } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
 const ProfileSetup = () => {
     const [formData, setFormData] = useState({
         bio: '',
@@ -30,14 +32,14 @@ const ProfileSetup = () => {
         uploadData.append('image', file);
 
         try {
-            const res = await axios.post('http://localhost:5001/api/upload', uploadData, {
+            const res = await axios.post(`${API_URL}/api/upload`, uploadData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`
                 }
             });
             // Update formData with the server-side URL
-            setFormData(prev => ({ ...prev, avatar: `http://localhost:5001${res.data.url}` }));
+            setFormData(prev => ({ ...prev, avatar: `${API_URL}${res.data.url}` }));
         } catch (err) {
             console.error('Upload failed:', err);
         }
@@ -46,7 +48,7 @@ const ProfileSetup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.put('http://localhost:5001/api/profile',
+            const res = await axios.put(`${API_URL}/api/profile`,
                 { ...formData, interests: formData.interests.split(',').map(i => i.trim()), age: Number(formData.age) },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

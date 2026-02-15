@@ -5,6 +5,8 @@ import { Send, ArrowLeft, MoreVertical, Circle, MessageSquare } from 'lucide-rea
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
 const Chat = () => {
     const { user, token } = useAuth();
     const { messages, setMessages, sendMessage, onlineUsers, typing, sendTyping, stopTyping, unreadMessages, clearUnread } = useChat();
@@ -17,7 +19,7 @@ const Chat = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const res = await axios.get('http://localhost:5001/api/profile', {
+                const res = await axios.get(`${API_URL}/api/profile`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setChatUsers(res.data);
@@ -32,7 +34,7 @@ const Chat = () => {
         const fetchMessages = async () => {
             if (selectedUser) {
                 try {
-                    const res = await axios.get(`http://localhost:5001/api/chat/${selectedUser._id}`, {
+                    const res = await axios.get(`${API_URL}/api/chat/${selectedUser._id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     setMessages(res.data);
